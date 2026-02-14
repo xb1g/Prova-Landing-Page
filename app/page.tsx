@@ -97,7 +97,7 @@ export default function Home() {
 
   return (
     <main
-      className="min-h-screen w-screen overflow-x-hidden flex flex-col text-black font-orbit"
+      className="min-h-screen w-full overflow-x-hidden flex flex-col text-black font-orbit"
       style={{ backgroundColor: "#FDFFF5" }}
     >
       <style>{`
@@ -135,28 +135,28 @@ export default function Home() {
         }
       `}</style>
       {/* Header */}
-      <header className="pt-6 pl-6 md:pt-6 md:pl-8 flex-shrink-0">
-        <h1 className="text-3xl md:text-5xl font-normal tracking-wider">
+      <header className="fixed top-0 left-0 right-0 z-50 pt-4 pl-6 md:pt-6 md:pl-8 flex-shrink-0" style={{ backgroundColor: "#FDFFF5" }}>
+        <h1 className="text-4xl md:text-5xl font-normal tracking-wider">
           prova
         </h1>
       </header>
 
       {/* Hero Section */}
-      <section className="flex-1 flex flex-col md:flex-row items-center justify-between px-6 md:px-8 gap-6 md:gap-8 mt-6 md:mt-0">
-        <div className="flex-1 flex flex-col justify-center items-center md:items-start text-center md:text-left">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal leading-tight mb-4 md:mb-6">
+      <section className="relative flex-1 flex flex-col md:flex-row items-center justify-between px-6 md:px-8 gap-4 md:gap-8 mt-24 md:mt-0">
+        <div className="flex-1 flex flex-col justify-center items-center md:items-start text-center md:text-left pb-48 md:pb-0">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-normal leading-tight mb-4 md:mb-8">
             Accountability that actually feels{" "}
             <span className="relative inline-block">
               <span className="relative z-10">good</span>
-              <span className="absolute bottom-0.5 sm:bottom-1 left-0 right-0 h-[3px] sm:h-1 animate-line-glow -z-0 rounded-full"></span>
+              <span className="absolute bottom-1 left-0 right-0 h-[5px] sm:h-[7px] animate-line-glow -z-0 rounded-full"></span>
             </span>
           </h2>
 
-          <button className="border-2 border-black px-5 py-2.5 md:px-6 md:py-3 text-sm md:text-base font-bold hover:bg-black hover:text-white transition-colors duration-200 w-fit">
+          <button className="border-2 border-black px-8 py-3 md:px-6 md:py-3 text-base md:text-lg font-bold hover:bg-black hover:text-white transition-colors duration-200 w-fit">
             Download the app
           </button>
 
-          <div className="mt-4 md:mt-8 space-y-1 md:space-y-2 text-xs md:text-sm font-light">
+          <div className="mt-4 md:mt-8 space-y-1 md:space-y-2 text-sm md:text-base font-light">
             <p>Set goals, Add friends.</p>
             <p>
               Post proof, Get{" "}
@@ -169,21 +169,21 @@ export default function Home() {
         </div>
 
         {/* Stickmen Figures */}
-        <div className="flex-1 flex justify-center items-end gap-1 sm:gap-2 h-full pb-4">
+        <div className="absolute bottom-20 left-0 right-0 md:relative md:bottom-0 flex-1 flex justify-center items-end gap-1.5 sm:gap-2 h-auto md:h-full pb-4 md:pb-4 w-full pointer-events-none">
           <img
             src="/stickman-1.svg"
             alt="stickman celebrating"
-            className="h-28 sm:h-36 md:h-48"
+            className="h-32 sm:h-36 md:h-48"
           />
           <img
             src="/stickman-2.svg"
             alt="stickman excited"
-            className="h-28 sm:h-36 md:h-48"
+            className="h-32 sm:h-36 md:h-48"
           />
           <div className="relative flex items-end">
             {/* Spotlight glow behind stickman-3 */}
             <div
-              className={`absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none w-[120px] h-[180px] sm:w-[150px] sm:h-[220px] md:w-[180px] md:h-[260px] transition-all duration-200 ${hypeActive ? "spotlight-animate" : ""}`}
+              className={`absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none w-[100px] h-[160px] sm:w-[150px] sm:h-[220px] md:w-[180px] md:h-[260px] transition-all duration-200 ${hypeActive ? "spotlight-animate" : ""}`}
               style={{
                 background: spotlightBg,
                 clipPath: "polygon(35% 0%, 65% 0%, 100% 100%, 0% 100%)",
@@ -192,13 +192,13 @@ export default function Home() {
             <img
               src="/stickman-3.svg"
               alt="stickman cheering"
-              className="h-28 sm:h-36 md:h-48 relative z-10"
+              className="h-32 sm:h-36 md:h-48 relative z-10"
             />
           </div>
           <img
             src="/stickman-4.svg"
             alt="stickman dancing"
-            className="h-28 sm:h-36 md:h-48"
+            className="h-32 sm:h-36 md:h-48"
           />
         </div>
       </section>
