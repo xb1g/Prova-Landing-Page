@@ -9,12 +9,12 @@ export default function Home() {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const colors = [
-    { r: 255, g: 230, b: 0 },   // yellow
+    { r: 255, g: 230, b: 0 }, // yellow
     { r: 255, g: 100, b: 200 }, // pink
     { r: 100, g: 200, b: 255 }, // cyan
     { r: 180, g: 100, b: 255 }, // purple
     { r: 100, g: 255, b: 150 }, // green
-    { r: 255, g: 150, b: 50 },  // orange
+    { r: 255, g: 150, b: 50 }, // orange
   ];
 
   const playHypeSound = useCallback(() => {
@@ -136,15 +136,16 @@ export default function Home() {
       `}</style>
       {/* Header */}
       <header className="pt-6 pl-6 md:pt-6 md:pl-8 flex-shrink-0">
-        <h1 className="text-3xl md:text-5xl font-normal tracking-wider">prova</h1>
+        <h1 className="text-3xl md:text-5xl font-normal tracking-wider">
+          prova
+        </h1>
       </header>
 
       {/* Hero Section */}
       <section className="flex-1 flex flex-col md:flex-row items-center justify-between px-6 md:px-8 gap-6 md:gap-8 mt-6 md:mt-0">
         <div className="flex-1 flex flex-col justify-center items-center md:items-start text-center md:text-left">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal leading-tight mb-4 md:mb-6">
-            Accountability{" "}
-            that actually feels{" "}
+            Accountability that actually feels{" "}
             <span className="relative inline-block">
               <span className="relative z-10">good</span>
               <span className="absolute bottom-0.5 sm:bottom-1 left-0 right-0 h-[3px] sm:h-1 animate-line-glow -z-0 rounded-full"></span>
@@ -157,7 +158,13 @@ export default function Home() {
 
           <div className="mt-4 md:mt-8 space-y-1 md:space-y-2 text-xs md:text-sm font-light">
             <p>Set goals, Add friends.</p>
-            <p>Post proof, Get <span className="hype-text" onClick={handleHypeClick}>hype</span>, Keep going.</p>
+            <p>
+              Post proof, Get{" "}
+              <span className="hype-text" onClick={handleHypeClick}>
+                hype
+              </span>
+              , Keep going.
+            </p>
           </div>
         </div>
 
@@ -168,11 +175,15 @@ export default function Home() {
             alt="stickman celebrating"
             className="h-28 sm:h-36 md:h-48"
           />
-          <img src="/stickman-2.svg" alt="stickman excited" className="h-28 sm:h-36 md:h-48" />
+          <img
+            src="/stickman-2.svg"
+            alt="stickman excited"
+            className="h-28 sm:h-36 md:h-48"
+          />
           <div className="relative flex items-end">
             {/* Spotlight glow behind stickman-3 */}
             <div
-              className={`absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none w-[120px] h-[180px] sm:w-[150px] sm:h-[220px] md:w-[180px] md:h-[260px] transition-all duration-200 ${hypeActive ? 'spotlight-animate' : ''}`}
+              className={`absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none w-[120px] h-[180px] sm:w-[150px] sm:h-[220px] md:w-[180px] md:h-[260px] transition-all duration-200 ${hypeActive ? "spotlight-animate" : ""}`}
               style={{
                 background: spotlightBg,
                 clipPath: "polygon(35% 0%, 65% 0%, 100% 100%, 0% 100%)",
@@ -184,7 +195,11 @@ export default function Home() {
               className="h-28 sm:h-36 md:h-48 relative z-10"
             />
           </div>
-          <img src="/stickman-4.svg" alt="stickman dancing" className="h-28 sm:h-36 md:h-48" />
+          <img
+            src="/stickman-4.svg"
+            alt="stickman dancing"
+            className="h-28 sm:h-36 md:h-48"
+          />
         </div>
       </section>
     </main>
