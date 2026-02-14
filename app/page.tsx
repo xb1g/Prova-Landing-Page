@@ -135,7 +135,10 @@ export default function Home() {
         }
       `}</style>
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 pt-4 pl-6 md:pt-6 md:pl-8 flex-shrink-0" style={{ backgroundColor: "#FDFFF5" }}>
+      <header
+        className="fixed top-0 left-0 right-0 z-50 pt-4 pl-6 md:pt-6 md:pl-8 flex-shrink-0"
+        style={{ backgroundColor: "#FDFFF5" }}
+      >
         <h1 className="text-4xl md:text-5xl font-normal tracking-wider">
           prova
         </h1>
