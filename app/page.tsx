@@ -1,210 +1,282 @@
-"use client";
-
-import { useState, useRef, useCallback, useEffect } from "react";
+import Image from "next/image";
+import {
+  ArrowRight,
+  CheckCircle2,
+  Heart,
+  MessageCircle,
+  Sparkles,
+  TrendingUp,
+  Users,
+} from "lucide-react";
 
 export default function Home() {
-  const [hypeActive, setHypeActive] = useState(false);
-  const [spotlightColor, setSpotlightColor] = useState(0);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  const colors = [
-    { r: 255, g: 230, b: 0 }, // yellow
-    { r: 255, g: 100, b: 200 }, // pink
-    { r: 100, g: 200, b: 255 }, // cyan
-    { r: 180, g: 100, b: 255 }, // purple
-    { r: 100, g: 255, b: 150 }, // green
-    { r: 255, g: 150, b: 50 }, // orange
-  ];
-
-  const playHypeSound = useCallback(() => {
-    const ctx = new AudioContext();
-
-    // Quick ascending "hype" tone burst
-    const now = ctx.currentTime;
-    const notes = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6
-
-    notes.forEach((freq, i) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.type = "square";
-      osc.frequency.value = freq;
-      gain.gain.setValueAtTime(0.08, now + i * 0.08);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.15);
-      osc.start(now + i * 0.08);
-      osc.stop(now + i * 0.08 + 0.15);
-    });
-
-    // Crowd cheer noise burst
-    const bufferSize = ctx.sampleRate * 0.6;
-    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 1.5);
-    }
-    const noise = ctx.createBufferSource();
-    noise.buffer = buffer;
-    const noiseFilter = ctx.createBiquadFilter();
-    noiseFilter.type = "bandpass";
-    noiseFilter.frequency.value = 2000;
-    noiseFilter.Q.value = 0.5;
-    const noiseGain = ctx.createGain();
-    noiseGain.gain.setValueAtTime(0.12, now + 0.1);
-    noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
-    noise.connect(noiseFilter);
-    noiseFilter.connect(noiseGain);
-    noiseGain.connect(ctx.destination);
-    noise.start(now + 0.1);
-  }, []);
-
-  const handleHypeClick = useCallback(() => {
-    playHypeSound();
-    setHypeActive(true);
-    setSpotlightColor(0);
-
-    // Clear any existing timers
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    if (intervalRef.current) clearInterval(intervalRef.current);
-
-    // Cycle through colors
-    let colorIdx = 0;
-    intervalRef.current = setInterval(() => {
-      colorIdx = (colorIdx + 1) % colors.length;
-      setSpotlightColor(colorIdx);
-    }, 200);
-
-    // Stop after 2.5 seconds
-    timeoutRef.current = setTimeout(() => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-      setHypeActive(false);
-      setSpotlightColor(0);
-    }, 2500);
-  }, [playHypeSound, colors.length]);
-
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, []);
-
-  const c = colors[spotlightColor];
-  const spotlightBg = hypeActive
-    ? `radial-gradient(ellipse 60% 80% at 50% 20%, rgba(${c.r}, ${c.g}, ${c.b}, 0.55) 0%, rgba(${c.r}, ${c.g}, ${c.b}, 0.3) 25%, rgba(${c.r}, ${c.g}, ${c.b}, 0.1) 55%, transparent 80%)`
-    : "radial-gradient(ellipse 60% 80% at 50% 20%, rgba(255, 230, 0, 0.45) 0%, rgba(255, 230, 0, 0.25) 25%, rgba(255, 230, 0, 0.08) 55%, transparent 80%)";
-
   return (
-    <main
-      className="min-h-screen w-full overflow-x-hidden flex flex-col text-black font-orbit"
+    <div
+      className="min-h-screen text-stone-900 font-sans selection:bg-green-400 selection:text-white"
       style={{ backgroundColor: "#FDFFF5" }}
     >
-      <style>{`
-        @keyframes lineGlow {
-          0%, 100% {
-            background-color: #BFFF00;
-            box-shadow: 0 0 8px rgba(191, 255, 0, 0.6);
-          }
-          50% {
-            background-color: #9FE800;
-            box-shadow: 0 0 12px rgba(159, 232, 0, 0.8);
-          }
-        }
-        .animate-line-glow {
-          animation: lineGlow 2s ease-in-out infinite;
-        }
-        @keyframes spotlightPulse {
-          0%, 100% { transform: translateX(-50%) scale(1); opacity: 1; }
-          50% { transform: translateX(-50%) scale(1.15); opacity: 0.85; }
-        }
-        .spotlight-animate {
-          animation: spotlightPulse 0.4s ease-in-out infinite;
-        }
-        .hype-text {
-          cursor: pointer;
-          transition: all 0.15s ease;
-          font-weight: inherit;
-        }
-        .hype-text:hover {
-          color: #BFFF00;
-          text-shadow: 0 0 8px rgba(191, 255, 0, 0.6);
-        }
-        .hype-text:active {
-          transform: scale(1.1);
-        }
-      `}</style>
-      {/* Header */}
-      <header
-        className="fixed top-0 left-0 right-0 z-50 pt-4 pl-6 md:pt-6 md:pl-8 flex-shrink-0"
-        style={{ backgroundColor: "#FDFFF5" }}
-      >
-        <h1 className="text-4xl md:text-5xl font-normal tracking-wider">
-          prova
-        </h1>
-      </header>
+      {/* Navigation */}
+      <nav className="flex items-center justify-between px-6 py-4 md:px-12 md:py-6 max-w-7xl mx-auto">
+        <div className="text-xl md:text-2xl font-bold tracking-tight">
+          Prova
+        </div>
+        <button className="bg-stone-900 text-white px-5 py-2.5 rounded-full text-sm md:text-base font-bold hover:bg-stone-800 transition-all hover:scale-105 active:scale-95 shadow-sm">
+          Join Waitlist
+        </button>
+      </nav>
 
       {/* Hero Section */}
-      <section className="relative flex-1 flex flex-col md:flex-row items-center justify-between px-6 md:px-8 gap-4 md:gap-8 mt-24 md:mt-0">
-        <div className="flex-1 flex flex-col justify-center items-center md:items-start text-center md:text-left pb-48 md:pb-0">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-normal leading-tight mb-4 md:mb-8">
+      <section className="px-6 pt-12 pb-24 md:pt-20 md:pb-32 max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16 relative">
+        <div className="flex-1 space-y-6 md:space-y-8 text-center lg:text-left z-10">
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1]">
             Accountability that actually feels{" "}
-            <span className="relative inline-block">
-              <span className="relative z-10">good</span>
-              <span className="absolute bottom-1 left-0 right-0 h-[5px] sm:h-[7px] animate-line-glow -z-0 rounded-full"></span>
-            </span>
-          </h2>
-
-          <button className="border-2 border-black px-8 py-3 md:px-6 md:py-3 text-base md:text-lg font-bold hover:bg-black hover:text-white transition-colors duration-200 w-fit">
-            Download the app
-          </button>
-
-          <div className="mt-4 md:mt-8 space-y-1 md:space-y-2 text-sm md:text-base font-light">
-            <p>Set goals, Add friends.</p>
-            <p>
-              Post proof, Get{" "}
-              <span className="hype-text" onClick={handleHypeClick}>
-                hype
-              </span>
-              , Keep going.
-            </p>
+            <span className="text-green-400">good.</span>
+          </h1>
+          <p className="text-lg md:text-xl text-stone-500 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-medium">
+            Set goals. Add friends. Post proof. Get hype. Keep going.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+            <button className="w-full sm:w-auto bg-green-400 text-stone-900 px-8 py-4 rounded-full font-bold text-lg hover:bg-green-500 transition-all hover:scale-105 active:scale-95 shadow-sm flex items-center justify-center gap-2">
+              Join the waitlist
+              <ArrowRight className="w-5 h-5" />
+            </button>
+            <button className="w-full sm:w-auto bg-white border border-stone-200 text-stone-700 px-8 py-4 rounded-full font-bold text-lg hover:bg-stone-50 transition-all active:scale-95 shadow-sm">
+              See how it works
+            </button>
           </div>
         </div>
 
-        {/* Stickmen Figures */}
-        <div className="absolute bottom-20 left-0 right-0 md:relative md:bottom-0 flex-1 flex justify-center items-end gap-1.5 sm:gap-2 h-auto md:h-full pb-4 md:pb-4 w-full pointer-events-none">
-          <img
-            src="/stickman-1.svg"
-            alt="stickman celebrating"
-            className="h-32 sm:h-36 md:h-48"
-          />
-          <img
-            src="/stickman-2.svg"
-            alt="stickman excited"
-            className="h-32 sm:h-36 md:h-48"
-          />
-          <div className="relative flex items-end">
-            {/* Spotlight glow behind stickman-3 */}
-            <div
-              className={`absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none w-[100px] h-[160px] sm:w-[150px] sm:h-[220px] md:w-[180px] md:h-[260px] transition-all duration-200 ${hypeActive ? "spotlight-animate" : ""}`}
-              style={{
-                background: spotlightBg,
-                clipPath: "polygon(35% 0%, 65% 0%, 100% 100%, 0% 100%)",
-              }}
-            />
-            <img
-              src="/stickman-3.svg"
-              alt="stickman cheering"
-              className="h-32 sm:h-36 md:h-48 relative z-10"
-            />
+        {/* UI Mockup (iPhone Frame) */}
+        <div className="flex-1 w-full max-w-[320px] md:max-w-[340px] relative group z-10 mx-auto lg:mx-0">
+          <div className="absolute inset-0 bg-green-400/20 rounded-[3rem] blur-3xl -z-10 transform group-hover:scale-105 transition-transform duration-500"></div>
+
+          <div className="bg-white border-[8px] border-stone-900 rounded-[3rem] shadow-2xl relative transform group-hover:-translate-y-2 transition-transform duration-500 overflow-hidden aspect-[9/19.5] flex flex-col">
+            {/* Dynamic Island / Top Notch Area */}
+            <div className="absolute top-0 inset-x-0 h-6 flex justify-center z-50">
+              <div className="w-24 h-6 bg-stone-900 rounded-b-3xl"></div>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-4 pt-10 pb-6 hide-scrollbar flex flex-col bg-stone-50">
+              {/* Goal Header */}
+              <div className="flex items-center justify-between mb-5">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600">
+                    <TrendingUp className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-base">Morning Run 🏃‍♀️</h3>
+                    <p className="text-xs text-stone-400 font-medium">
+                      3x a week
+                    </p>
+                  </div>
+                </div>
+                <div className="flex -space-x-2">
+                  <div className="w-7 h-7 rounded-full bg-blue-100 border-2 border-white flex items-center justify-center text-[10px] shadow-sm">
+                    👤
+                  </div>
+                  <div className="w-7 h-7 rounded-full bg-purple-100 border-2 border-white flex items-center justify-center text-[10px] shadow-sm">
+                    👱‍♀️
+                  </div>
+                </div>
+              </div>
+
+              {/* Proof Card (Image Container) */}
+              <div className="bg-white rounded-[1.5rem] p-3 mb-4 shadow-sm border border-stone-100 flex-1 flex flex-col">
+                <div className="flex items-center gap-2.5 mb-2.5">
+                  <div className="w-7 h-7 rounded-full bg-stone-900 border-2 border-white shadow-sm flex items-center justify-center text-white text-[9px] font-bold">
+                    You
+                  </div>
+                  <span className="text-xs font-bold text-stone-800">
+                    Just finished 5k!
+                  </span>
+                </div>
+
+                {/* User Image Area */}
+                <div className="flex-1 bg-stone-200 rounded-2xl mb-3 overflow-hidden relative shadow-inner min-h-[200px]">
+                  <Image
+                    src="/demo-image.jpg"
+                    alt="Snowy mountain"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+
+                <div className="flex items-center gap-4 text-stone-500 mt-auto">
+                  <div className="flex items-center gap-1.5 cursor-pointer text-green-500 transition-colors">
+                    <Heart className="w-4 h-4 fill-green-400 text-green-400" />
+                    <span className="text-xs font-bold text-stone-700">12</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 cursor-pointer text-stone-700 transition-colors">
+                    <MessageCircle className="w-4 h-4" />
+                    <span className="text-xs font-bold">4</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Reactions (Voice + Text) */}
+              <div className="space-y-3 mt-auto">
+                <div className="flex gap-2 items-end">
+                  <div className="w-7 h-7 rounded-full bg-blue-100 flex-shrink-0 flex items-center justify-center text-[10px] mt-1 border-2 border-white shadow-sm z-10">
+                    👤
+                  </div>
+                  {/* Voice Reaction Bubble */}
+                  <div className="bg-stone-900 border border-stone-800 px-3 py-2 rounded-[1.25rem] rounded-bl-none shadow-sm flex items-center gap-2 max-w-[85%] relative overflow-hidden group/audio cursor-pointer">
+                    <div className="absolute inset-0 bg-green-400/10 opacity-0 group-hover/audio:opacity-100 transition-opacity"></div>
+                    <div className="w-6 h-6 rounded-full bg-green-400 flex items-center justify-center shrink-0 shadow-sm relative z-10">
+                      <div className="w-2 h-2 bg-stone-900 rounded-[1px] ml-0.5"></div>
+                    </div>
+
+                    {/* Audio Waveform */}
+                    <div className="flex items-center gap-0.5 h-4 mx-1 relative z-10">
+                      {[1, 2, 3, 2, 4, 5, 3, 2, 1, 3, 4, 2, 1, 2].map(
+                        (h, i) => (
+                          <div
+                            key={i}
+                            className="w-0.5 bg-green-400/80 rounded-full transition-all"
+                            style={{ height: `${(h / 5) * 100}%` }}
+                          />
+                        ),
+                      )}
+                    </div>
+                    <span className="text-[10px] font-bold text-green-400 opacity-80 shrink-0 relative z-10">
+                      0:04
+                    </span>
+                  </div>
+                </div>
+                <div className="flex gap-2 items-end">
+                  <div className="w-7 h-7 rounded-full bg-purple-100 flex-shrink-0 flex items-center justify-center text-[10px] mt-1 border-2 border-white shadow-sm z-10">
+                    👱‍♀️
+                  </div>
+                  <div className="bg-white border border-stone-100 px-3 py-2 rounded-[1.25rem] rounded-bl-none text-[11px] font-medium text-stone-800 shadow-sm">
+                    W 👑
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <img
-            src="/stickman-4.svg"
-            alt="stickman dancing"
-            className="h-32 sm:h-36 md:h-48"
-          />
         </div>
       </section>
-    </main>
+
+      {/* How it works */}
+      <section className="bg-white py-24 md:py-32 px-6 border-y border-stone-100">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16 md:mb-24">
+            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">
+              How it works
+            </h2>
+            <p className="text-stone-500 text-lg md:text-xl font-medium max-w-2xl mx-auto">
+              Simple steps. No complex rules or point systems.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
+            <div className="bg-stone-50 p-8 rounded-[2rem] hover:bg-stone-100 transition-colors duration-300 border border-stone-100">
+              <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 text-2xl font-black text-green-400">
+                1
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-stone-900">
+                Set a goal.
+              </h3>
+              <p className="text-stone-500 font-medium leading-relaxed">
+                Choose something you actually want to do.
+              </p>
+            </div>
+
+            <div className="bg-stone-50 p-8 rounded-[2rem] hover:bg-stone-100 transition-colors duration-300 border border-stone-100">
+              <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 text-2xl font-black text-green-400">
+                2
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-stone-900">
+                Add your people.
+              </h3>
+              <p className="text-stone-500 font-medium leading-relaxed">
+                Pick which friends are on this goal with you.
+              </p>
+            </div>
+
+            <div className="bg-stone-50 p-8 rounded-[2rem] hover:bg-stone-100 transition-colors duration-300 border border-stone-100">
+              <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 text-2xl font-black text-green-400">
+                3
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-stone-900">
+                Post proof. Get hype.
+              </h3>
+              <p className="text-stone-500 font-medium leading-relaxed">
+                Share progress. Leave voice reactions. Motivate. Repeat.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Social Proof */}
+      <section
+        className="py-24 md:py-32 px-6"
+        style={{ backgroundColor: "#FDFFF5" }}
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16 md:mb-20">
+            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight max-w-2xl mx-auto text-stone-900">
+              Built for students who want to follow through.
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <div className="bg-white p-6 md:p-8 rounded-[2rem] border border-stone-100 shadow-sm transform hover:-translate-y-1 transition-transform duration-300">
+              <div className="flex text-green-400 mb-4 gap-1">
+                <CheckCircle2 className="w-6 h-6 fill-green-400 text-white" />
+              </div>
+              <p className="text-lg font-bold text-stone-800 leading-snug">
+                "It feels like my friends are actually rooting for me."
+              </p>
+            </div>
+
+            <div className="bg-white p-6 md:p-8 rounded-[2rem] border border-stone-100 shadow-sm transform hover:-translate-y-1 transition-transform duration-300 md:translate-y-4">
+              <div className="flex text-green-400 mb-4 gap-1">
+                <CheckCircle2 className="w-6 h-6 fill-green-400 text-white" />
+              </div>
+              <p className="text-lg font-bold text-stone-800 leading-snug">
+                "Way less pressure than streak apps."
+              </p>
+            </div>
+
+            <div className="bg-white p-6 md:p-8 rounded-[2rem] border border-stone-100 shadow-sm transform hover:-translate-y-1 transition-transform duration-300">
+              <div className="flex text-green-400 mb-4 gap-1">
+                <CheckCircle2 className="w-6 h-6 fill-green-400 text-white" />
+              </div>
+              <p className="text-lg font-bold text-stone-800 leading-snug">
+                "Lowkey makes me want to post proof."
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="bg-white py-24 md:py-32 px-6 text-center border-t border-stone-100">
+        <div className="max-w-3xl mx-auto flex flex-col items-center">
+          <div className="w-20 h-20 bg-green-100 text-green-500 rounded-full flex items-center justify-center mb-8 shadow-sm">
+            <Users className="w-10 h-10" />
+          </div>
+          <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-8 text-stone-900">
+            Start showing up.
+          </h2>
+          <button className="bg-stone-900 text-white px-10 py-5 rounded-full font-bold text-xl hover:bg-stone-800 transition-all hover:scale-105 active:scale-95 shadow-lg mb-6">
+            Join Prova
+          </button>
+          <p className="text-stone-400 font-medium text-lg">
+            No pressure. Just progress.
+          </p>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer
+        className="py-10 text-center text-stone-400 text-sm font-medium border-t border-stone-100"
+        style={{ backgroundColor: "#FDFFF5" }}
+      >
+        © {new Date().getFullYear()} Prova. All rights reserved.
+      </footer>
+    </div>
   );
 }
