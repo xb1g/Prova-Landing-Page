@@ -180,11 +180,96 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 md:gap-8">
-            <div className="bg-stone-50 p-8 rounded-[2rem] hover:bg-stone-100 transition-colors duration-300 border border-stone-100">
-              <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 text-2xl font-black text-green-400">
+            {/* Step 1 */}
+            <div className="bg-stone-50 p-6 md:p-8 rounded-[2rem] hover:bg-stone-100 transition-colors duration-300 border border-stone-100 group flex flex-col">
+              <div className="w-12 h-12 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 text-xl font-black text-green-400 shrink-0">
                 1
               </div>
-              <h3 className="text-xl font-bold mb-3 text-stone-900">
+
+              <div className="w-full h-48 bg-white rounded-2xl mb-6 shadow-sm border border-stone-100 overflow-hidden relative flex items-center justify-center">
+                <svg viewBox="0 0 200 150" className="w-full h-full">
+                  <style>
+                    {`
+                      @keyframes slideUpFade {
+                        0%, 10% { transform: translateY(20px); opacity: 0; }
+                        20% { transform: translateY(0); opacity: 1; }
+                        80% { transform: translateY(0); opacity: 1; }
+                        90%, 100% { transform: translateY(-20px); opacity: 0; }
+                      }
+                      @keyframes drawCheck {
+                        0%, 30% { stroke-dashoffset: 20; }
+                        40%, 80% { stroke-dashoffset: 0; }
+                        90%, 100% { stroke-dashoffset: 20; }
+                      }
+                      .goal-card { animation: slideUpFade 4s ease-in-out infinite; }
+                      .check-draw { 
+                        stroke-dasharray: 20;
+                        stroke-dashoffset: 20;
+                        animation: drawCheck 4s ease-in-out infinite; 
+                      }
+                    `}
+                  </style>
+                  {/* Background skeleton */}
+                  <rect
+                    x="40"
+                    y="30"
+                    width="120"
+                    height="24"
+                    rx="6"
+                    fill="#F5F5F4"
+                  />
+                  <rect
+                    x="40"
+                    y="62"
+                    width="100"
+                    height="24"
+                    rx="6"
+                    fill="#F5F5F4"
+                  />
+
+                  {/* Animated new goal */}
+                  <g className="goal-card">
+                    <rect
+                      x="30"
+                      y="94"
+                      width="140"
+                      height="40"
+                      rx="10"
+                      fill="#ffffff"
+                      stroke="#4ADE80"
+                      strokeWidth="2"
+                      filter="drop-shadow(0 4px 6px rgba(0,0,0,0.05))"
+                    />
+                    <circle
+                      cx="50"
+                      cy="114"
+                      r="8"
+                      fill="#ecfdf5"
+                      stroke="#10b981"
+                      strokeWidth="1.5"
+                    />
+                    <path
+                      d="M 46 114 L 49 117 L 54 111"
+                      fill="none"
+                      stroke="#10b981"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="check-draw"
+                    />
+                    <rect
+                      x="68"
+                      y="110"
+                      width="80"
+                      height="8"
+                      rx="4"
+                      fill="#a7f3d0"
+                    />
+                  </g>
+                </svg>
+              </div>
+
+              <h3 className="text-xl font-bold mb-3 text-stone-900 mt-auto">
                 Set a goal.
               </h3>
               <p className="text-stone-500 font-medium leading-relaxed">
@@ -192,11 +277,132 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="bg-stone-50 p-8 rounded-[2rem] hover:bg-stone-100 transition-colors duration-300 border border-stone-100">
-              <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 text-2xl font-black text-green-400">
+            {/* Step 2 */}
+            <div className="bg-stone-50 p-6 md:p-8 rounded-[2rem] hover:bg-stone-100 transition-colors duration-300 border border-stone-100 group flex flex-col">
+              <div className="w-12 h-12 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 text-xl font-black text-green-400 shrink-0">
                 2
               </div>
-              <h3 className="text-xl font-bold mb-3 text-stone-900">
+
+              <div className="w-full h-48 bg-white rounded-2xl mb-6 shadow-sm border border-stone-100 overflow-hidden relative flex items-center justify-center">
+                <svg viewBox="0 0 200 150" className="w-full h-full">
+                  <style>
+                    {`
+                      @keyframes popAvatar {
+                        0%, 10% { transform: scale(0); opacity: 0; }
+                        20%, 80% { transform: scale(1); opacity: 1; }
+                        90%, 100% { transform: scale(0); opacity: 0; }
+                      }
+                      @keyframes connectLine {
+                        0%, 20% { stroke-dashoffset: 50; }
+                        30%, 80% { stroke-dashoffset: 0; }
+                        90%, 100% { stroke-dashoffset: 50; }
+                      }
+                      .av-center { animation: popAvatar 5s cubic-bezier(0.34, 1.56, 0.64, 1) infinite; transform-origin: 100px 75px; }
+                      .av-1 { animation: popAvatar 5s cubic-bezier(0.34, 1.56, 0.64, 1) infinite; animation-delay: 0.2s; transform-origin: 50px 45px; }
+                      .av-2 { animation: popAvatar 5s cubic-bezier(0.34, 1.56, 0.64, 1) infinite; animation-delay: 0.4s; transform-origin: 150px 45px; }
+                      .av-3 { animation: popAvatar 5s cubic-bezier(0.34, 1.56, 0.64, 1) infinite; animation-delay: 0.6s; transform-origin: 100px 125px; }
+                      
+                      .conn-1 { stroke-dasharray: 50; stroke-dashoffset: 50; animation: connectLine 5s ease-out infinite; animation-delay: 0.2s; }
+                      .conn-2 { stroke-dasharray: 50; stroke-dashoffset: 50; animation: connectLine 5s ease-out infinite; animation-delay: 0.4s; }
+                      .conn-3 { stroke-dasharray: 50; stroke-dashoffset: 50; animation: connectLine 5s ease-out infinite; animation-delay: 0.6s; }
+                    `}
+                  </style>
+
+                  {/* Connection Lines */}
+                  <line
+                    x1="100"
+                    y1="75"
+                    x2="50"
+                    y2="45"
+                    stroke="#e7e5e4"
+                    strokeWidth="2"
+                    strokeDasharray="4 4"
+                    className="conn-1"
+                  />
+                  <line
+                    x1="100"
+                    y1="75"
+                    x2="150"
+                    y2="45"
+                    stroke="#e7e5e4"
+                    strokeWidth="2"
+                    strokeDasharray="4 4"
+                    className="conn-2"
+                  />
+                  <line
+                    x1="100"
+                    y1="75"
+                    x2="100"
+                    y2="125"
+                    stroke="#e7e5e4"
+                    strokeWidth="2"
+                    strokeDasharray="4 4"
+                    className="conn-3"
+                  />
+
+                  {/* Central Goal Element */}
+                  <g className="av-center">
+                    <circle
+                      cx="100"
+                      cy="75"
+                      r="20"
+                      fill="#ffffff"
+                      stroke="#4ADE80"
+                      strokeWidth="3"
+                      filter="drop-shadow(0 2px 4px rgba(0,0,0,0.05))"
+                    />
+                    <circle cx="100" cy="75" r="8" fill="#4ADE80" />
+                  </g>
+
+                  {/* Avatars */}
+                  <g className="av-1">
+                    <circle
+                      cx="50"
+                      cy="45"
+                      r="16"
+                      fill="#DBEAFE"
+                      stroke="#ffffff"
+                      strokeWidth="2"
+                      filter="drop-shadow(0 2px 4px rgba(0,0,0,0.05))"
+                    />
+                    <text x="50" y="50" fontSize="14" textAnchor="middle">
+                      👤
+                    </text>
+                  </g>
+
+                  <g className="av-2">
+                    <circle
+                      cx="150"
+                      cy="45"
+                      r="16"
+                      fill="#F3E8FF"
+                      stroke="#ffffff"
+                      strokeWidth="2"
+                      filter="drop-shadow(0 2px 4px rgba(0,0,0,0.05))"
+                    />
+                    <text x="150" y="50" fontSize="14" textAnchor="middle">
+                      👱‍♀️
+                    </text>
+                  </g>
+
+                  <g className="av-3">
+                    <circle
+                      cx="100"
+                      cy="125"
+                      r="16"
+                      fill="#FEF3C7"
+                      stroke="#ffffff"
+                      strokeWidth="2"
+                      filter="drop-shadow(0 2px 4px rgba(0,0,0,0.05))"
+                    />
+                    <text x="100" y="130" fontSize="14" textAnchor="middle">
+                      🧔
+                    </text>
+                  </g>
+                </svg>
+              </div>
+
+              <h3 className="text-xl font-bold mb-3 text-stone-900 mt-auto">
                 Add your people.
               </h3>
               <p className="text-stone-500 font-medium leading-relaxed">
@@ -204,11 +410,196 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="bg-stone-50 p-8 rounded-[2rem] hover:bg-stone-100 transition-colors duration-300 border border-stone-100">
-              <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 text-2xl font-black text-green-400">
+            {/* Step 3 */}
+            <div className="bg-stone-50 p-6 md:p-8 rounded-[2rem] hover:bg-stone-100 transition-colors duration-300 border border-stone-100 group flex flex-col">
+              <div className="w-12 h-12 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 text-xl font-black text-green-400 shrink-0">
                 3
               </div>
-              <h3 className="text-xl font-bold mb-3 text-stone-900">
+
+              <div className="w-full h-48 bg-white rounded-2xl mb-6 shadow-sm border border-stone-100 overflow-hidden relative flex items-center justify-center">
+                <svg viewBox="0 0 200 150" className="w-full h-full">
+                  <style>
+                    {`
+                      @keyframes dropPost {
+                        0%, 10% { transform: translateY(-20px) scale(0.95); opacity: 0; }
+                        20%, 80% { transform: translateY(0) scale(1); opacity: 1; }
+                        90%, 100% { transform: translateY(-20px) scale(0.95); opacity: 0; }
+                      }
+                      @keyframes popReaction {
+                        0%, 30% { transform: scale(0); opacity: 0; }
+                        40% { transform: scale(1.2); opacity: 1; }
+                        45%, 80% { transform: scale(1); opacity: 1; }
+                        90%, 100% { transform: scale(0); opacity: 0; }
+                      }
+                      @keyframes slideVoice {
+                        0%, 40% { transform: translateX(-10px); opacity: 0; }
+                        50%, 80% { transform: translateX(0); opacity: 1; }
+                        90%, 100% { transform: translateX(-10px); opacity: 0; }
+                      }
+                      @keyframes waveAnim {
+                        0%, 100% { transform: scaleY(0.4); }
+                        50% { transform: scaleY(1); }
+                      }
+                      
+                      .post-card { animation: dropPost 6s cubic-bezier(0.16, 1, 0.3, 1) infinite; transform-origin: center; }
+                      .reaction-heart { animation: popReaction 6s cubic-bezier(0.16, 1, 0.3, 1) infinite; transform-origin: 150px 80px; }
+                      .voice-note { animation: slideVoice 6s cubic-bezier(0.16, 1, 0.3, 1) infinite; }
+                      
+                      .wave { transform-origin: center; animation: waveAnim 0.8s ease-in-out infinite alternate; }
+                      .w-1 { animation-delay: 0.1s; }
+                      .w-2 { animation-delay: 0.2s; }
+                      .w-3 { animation-delay: 0.3s; }
+                      .w-4 { animation-delay: 0.4s; }
+                      .w-5 { animation-delay: 0.5s; }
+                    `}
+                  </style>
+
+                  {/* Main Post Card */}
+                  <g className="post-card">
+                    <rect
+                      x="30"
+                      y="20"
+                      width="140"
+                      height="90"
+                      rx="12"
+                      fill="#ffffff"
+                      stroke="#e7e5e4"
+                      strokeWidth="2"
+                      filter="drop-shadow(0 4px 6px rgba(0,0,0,0.05))"
+                    />
+                    {/* User header */}
+                    <circle cx="50" cy="40" r="8" fill="#d1d5db" />
+                    <rect
+                      x="65"
+                      y="37"
+                      width="50"
+                      height="6"
+                      rx="3"
+                      fill="#d1d5db"
+                    />
+                    {/* Image Placeholder */}
+                    <rect
+                      x="40"
+                      y="55"
+                      width="120"
+                      height="40"
+                      rx="6"
+                      fill="#f3f4f6"
+                    />
+                    <circle cx="100" cy="75" r="10" fill="#e5e7eb" />
+                    <path
+                      d="M 95 78 L 100 70 L 108 80"
+                      stroke="#9ca3af"
+                      strokeWidth="2"
+                      fill="none"
+                      strokeLinejoin="round"
+                    />
+                  </g>
+
+                  {/* Heart Reaction */}
+                  <g className="reaction-heart">
+                    <circle
+                      cx="150"
+                      cy="80"
+                      r="14"
+                      fill="#ffffff"
+                      filter="drop-shadow(0 2px 4px rgba(0,0,0,0.1))"
+                    />
+                    <path
+                      d="M 150 83.5 C 150 83.5 144 78 144 74 C 144 70 150 70 150 74 C 150 70 156 70 156 74 C 156 78 150 83.5 150 83.5"
+                      fill="#ef4444"
+                    />
+                  </g>
+
+                  {/* Voice Note Reaction */}
+                  <g className="voice-note">
+                    {/* Avatar small */}
+                    <circle
+                      cx="45"
+                      cy="120"
+                      r="10"
+                      fill="#F3E8FF"
+                      stroke="#ffffff"
+                      strokeWidth="2"
+                      filter="drop-shadow(0 2px 4px rgba(0,0,0,0.05))"
+                    />
+                    <text x="45" y="124" fontSize="10" textAnchor="middle">
+                      👱‍♀️
+                    </text>
+
+                    {/* Voice Bubble */}
+                    <rect
+                      x="60"
+                      y="110"
+                      width="70"
+                      height="20"
+                      rx="10"
+                      fill="#1c1917"
+                    />
+                    <circle cx="72" cy="120" r="5" fill="#4ade80" />
+                    <path d="M 71 118 L 71 122 L 74 120 Z" fill="#1c1917" />
+
+                    {/* Waves */}
+                    <rect
+                      x="85"
+                      y="115"
+                      width="2"
+                      height="10"
+                      rx="1"
+                      fill="#4ade80"
+                      className="wave w-1"
+                    />
+                    <rect
+                      x="90"
+                      y="117"
+                      width="2"
+                      height="6"
+                      rx="1"
+                      fill="#4ade80"
+                      className="wave w-2"
+                    />
+                    <rect
+                      x="95"
+                      y="113"
+                      width="2"
+                      height="14"
+                      rx="1"
+                      fill="#4ade80"
+                      className="wave w-3"
+                    />
+                    <rect
+                      x="100"
+                      y="116"
+                      width="2"
+                      height="8"
+                      rx="1"
+                      fill="#4ade80"
+                      className="wave w-4"
+                    />
+                    <rect
+                      x="105"
+                      y="118"
+                      width="2"
+                      height="4"
+                      rx="1"
+                      fill="#4ade80"
+                      className="wave w-5"
+                    />
+
+                    <text
+                      x="117"
+                      y="123"
+                      fontSize="8"
+                      fill="#4ade80"
+                      fontWeight="bold"
+                    >
+                      0:04
+                    </text>
+                  </g>
+                </svg>
+              </div>
+
+              <h3 className="text-xl font-bold mb-3 text-stone-900 mt-auto">
                 Post proof. Get hype.
               </h3>
               <p className="text-stone-500 font-medium leading-relaxed">
