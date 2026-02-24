@@ -40,9 +40,13 @@ export default function Home() {
               Join the waitlist
               <ArrowRight className="w-5 h-5" />
             </button>
-            <button className="w-full sm:w-auto bg-white border border-stone-200 text-stone-700 px-8 py-4 rounded-full font-bold text-lg hover:bg-stone-50 transition-all active:scale-95 shadow-sm">
+            <a
+              href="#how-it-works"
+              className="w-full sm:w-auto bg-white border border-stone-200 text-stone-700 px-8 py-4 rounded-full font-bold text-lg hover:bg-stone-50 transition-all active:scale-95 shadow-sm inline-flex items-center justify-center gap-2"
+            >
               See how it works
-            </button>
+              <ArrowRight className="w-5 h-5" />
+            </a>
           </div>
         </div>
 
@@ -158,14 +162,20 @@ export default function Home() {
       </section>
 
       {/* How it works */}
-      <section className="bg-white py-24 md:py-32 px-6 border-y border-stone-100">
+      <section
+        id="how-it-works"
+        className="bg-gradient-to-b from-green-50 via-white to-white py-24 md:py-32 px-6 border-y border-stone-100 scroll-mt-20"
+      >
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 md:mb-24">
+            <p className="inline-flex items-center bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-bold tracking-wide uppercase mb-5">
+              How Prova works
+            </p>
             <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">
-              How it works
+              Start in 3 quick steps
             </h2>
             <p className="text-stone-500 text-lg md:text-xl font-medium max-w-2xl mx-auto">
-              Simple steps. No complex rules or point systems.
+              Set a goal, invite friends, and post proof today.
             </p>
           </div>
 
